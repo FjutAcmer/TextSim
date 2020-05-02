@@ -2,10 +2,9 @@
 
 import codecs
 import copy
-import sys
 import json
-import time
-from datetime import date
+import sys
+from datetime import datetime
 
 import jieba
 import numpy as np
@@ -21,7 +20,7 @@ def get_cos(x, y):
 
 
 if __name__ == '__main__':
-    startTime = time.time()
+    startTime = datetime.now()
     testFilePath = sys.argv[1]
     sampleFilePath = sys.argv[2]
     resultFilePath = sys.argv[3]
@@ -79,8 +78,8 @@ if __name__ == '__main__':
         "sample_file_path": sampleFilePath,
         "result_file_path": resultFilePath,
         "cos_sim_num": testFileSim,
-        "begin_time": startTime,
-        "end_time": time.time()
+        "begin_time": str(startTime),
+        "end_time": str(datetime.now())
     }, ensure_ascii=False)
     print(resultJson)
     resultFile = codecs.open(resultFilePath, "w", "utf-8")
