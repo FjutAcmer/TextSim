@@ -75,14 +75,13 @@ if __name__ == '__main__':
     testFileSim = get_cos(sampleData, testFileData)
 
     resultJson = json.dumps({
-        "测试文件路径": testFilePath,
-        "样本文件路径": sampleFilePath,
-        "结果文件路径": resultFilePath,
-        "余弦相似度": testFileSim,
-        "测试开始时间": startTime,
-        "测试结束时间": time.time()
+        "test_file_path": testFilePath,
+        "sample_file_path": sampleFilePath,
+        "result_file_path": resultFilePath,
+        "cos_sim_num": testFileSim,
+        "begin_time": startTime,
+        "end_time": time.time()
     }, ensure_ascii=False)
-
     print(resultJson)
     resultFile = codecs.open(resultFilePath, "w", "utf-8")
     resultFile.write(resultJson)
