@@ -21,27 +21,28 @@ def get_cos(x, y):
 
 if __name__ == '__main__':
     startTime = datetime.now()
+    # 读取三个参数
     testFilePath = sys.argv[1]
     sampleFilePath = sys.argv[2]
     resultFilePath = sys.argv[3]
-
+    # 读取样本文件
     f1 = codecs.open(sampleFilePath, "r", "utf-8")
     try:
         f1_text = f1.read()
     finally:
         f1.close()
-
+    # 进行结巴分词
     f1_seg_list = jieba.cut(f1_text)
-    # first test
+    # 读取测试文件
     ftest1 = codecs.open(testFilePath, "r", "utf-8")
     try:
         ftest1_text = ftest1.read()
     finally:
         ftest1.close()
+    # 进行结巴分词
     ftest1_seg_list = jieba.cut(ftest1_text)
 
-    # read sample text
-    # remove stop word and constructor dict
+    # 停用词文件路径
     f_stop = codecs.open(r"D:\testfile\stopwords.txt", "r", "utf-8")
     try:
         f_stop_text = f_stop.read()
@@ -53,19 +54,20 @@ if __name__ == '__main__':
     all_words = {}
 
     for word in f1_seg_list:
+        # 去除停用词，读取词集
         if not (word.strip()) in f_stop_seg_list:
             test_words.setdefault(word, 0)
             all_words.setdefault(word, 0)
             all_words[word] += 1
 
-        # read to be tested word
     mytest1_words = copy.deepcopy(test_words)
     for word in ftest1_seg_list:
+        # 去除停用词，读取词集
         if not (word.strip()) in f_stop_seg_list:
             if word in mytest1_words:
                 mytest1_words[word] += 1
 
-    # calculate sample with to be tested text sample
+    # 计算相似度
     sampleData = []
     testFileData = []
     for key in all_words.keys():
@@ -73,6 +75,7 @@ if __name__ == '__main__':
         testFileData.append(mytest1_words[key])
     testFileSim = get_cos(sampleData, testFileData)
 
+    # 返回结果
     resultJson = json.dumps({
         "test_file_path": testFilePath,
         "sample_file_path": sampleFilePath,
@@ -82,6 +85,8 @@ if __name__ == '__main__':
         "end_time": str(datetime.now())
     }, ensure_ascii=False)
     print(resultJson)
+
     resultFile = codecs.open(resultFilePath, "w", "utf-8")
+    # 结果写入结果文件
     resultFile.write(resultJson)
     resultFile.close()
